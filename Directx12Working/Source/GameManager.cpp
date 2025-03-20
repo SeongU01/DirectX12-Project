@@ -18,7 +18,7 @@ GameManager::GameManager()
 void GameManager::Run()
 {
 	MSG msg;
-
+  _pTimer->Reset();
 	while (true)
 	{
 		if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE))
@@ -31,6 +31,7 @@ void GameManager::Run()
 		}
 		else
 		{
+      _pTimer->Tick();
       _pRenderer->CalculateFrameRate();
 			StartGame();
 			FixedUpdateGame(_fixedCount);
@@ -110,8 +111,6 @@ void GameManager::FixedUpdateGame(int count)
 int GameManager::UpdateGame()
 {
 	int isEvent = 0;
-
-	_pTimer->Tick();
   float delta = _pTimer->DeltaTime();
 	_pInputManager->Update(delta);
 	_pCamera->Update(delta);
