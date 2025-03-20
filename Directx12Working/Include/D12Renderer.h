@@ -24,12 +24,13 @@ public:
   static D12Renderer* Create();
   // Base을(를) 통해 상속됨
   void Free() override;
-  
+  void CalculateFrameRate();
+
 private:
   void CreateCommandObjects();
   void CreateSwapChain();
   void CreateRtvAndDsvDescriptorHeaps();
-
+  
 public:
   int _clientWidth = 800;
   int _clientHeight = 600;

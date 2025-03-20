@@ -1,5 +1,6 @@
 #include "D12Renderer.h"
 #include "GameManager.h"
+#include "GameTimer.h"
 using namespace Microsoft::WRL;
 bool D12Renderer::Initialize()
 {
@@ -228,6 +229,28 @@ D12Renderer* D12Renderer::Create()
 }
 
 void D12Renderer::Free() {}
+
+void D12Renderer::CalculateFrameRate()
+{
+  static int frameCnt = 0;
+  static float elapsed = 0.f;
+  frameCnt++;
+  if (GameTimer::GetInstance()->TotalTime() - elapsed >= 1.f)
+  {
+    float fps = (float)frameCnt;
+    float mspf = 1000.f / fps;
+    std::wstring fpsStr = std::to_wstring(fps);
+    std::wstring mspfStr = std::to_wstring(mspf);
+    std::wstring windowText =
+         L"    fps: " + fpsStr + L"   mspf: " + mspfStr;
+
+    SetWindowText(GameManager::GetInstance()->GetWindow(), windowText.c_str());
+
+    // Reset for next average.
+    frameCnt = 0;
+    elapsed+= 1.0f;
+  }
+}
 
 void D12Renderer::CreateCommandObjects()
 {

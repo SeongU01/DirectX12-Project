@@ -31,6 +31,7 @@ void GameManager::Run()
 		}
 		else
 		{
+      _pRenderer->CalculateFrameRate();
 			StartGame();
 			FixedUpdateGame(_fixedCount);
 			if (GameState::Game_End == UpdateGame())
