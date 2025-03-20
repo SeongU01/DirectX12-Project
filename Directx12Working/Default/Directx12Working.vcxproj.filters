@@ -1,0 +1,140 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source">
+      <UniqueIdentifier>{7a993226-9c5d-472f-85d4-e2f1b57d003b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include">
+      <UniqueIdentifier>{6d8785f6-1c98-496f-b610-5cf539aa8b31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\EngineBase">
+      <UniqueIdentifier>{3b9c4063-9359-4272-809d-e4bc3340449f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Manager">
+      <UniqueIdentifier>{81939e35-323b-4df9-a843-78b9f9630974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Manager">
+      <UniqueIdentifier>{28735108-7686-4a6d-b2e9-a1e81b88be9b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\Renderer">
+      <UniqueIdentifier>{ceb6325f-99d6-4232-ad02-75d6b8baefc7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\Renderer">
+      <UniqueIdentifier>{efc5f84c-baa7-43a3-be92-7a9ab249a67c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\DX">
+      <UniqueIdentifier>{53a04e51-1f96-47f4-b5e1-467b98ec0609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Include\DX">
+      <UniqueIdentifier>{7691225c-bb53-4d4f-a5a2-2510f94fd485}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\WinApp.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\InputManager.cpp">
+      <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GameTimer.cpp">
+      <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GameManager.cpp">
+      <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Transform.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Camera.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\GameObject.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Component.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\SceneManager.cpp">
+      <Filter>Source\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\D12Renderer.cpp">
+      <Filter>Source\Renderer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\MathHelper.cpp">
+      <Filter>Source\DX</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\D3DUtil.cpp">
+      <Filter>Source\DX</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Include\Base.h">
+      <Filter>Include\EngineBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Define.h">
+      <Filter>Include\EngineBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Function.h">
+      <Filter>Include\EngineBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\InputManager.h">
+      <Filter>Include\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\WinApp.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\GameTimer.h">
+      <Filter>Include\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\GameManager.h">
+      <Filter>Include\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Transform.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Camera.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\GameObject.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Component.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\SceneManager.h">
+      <Filter>Include\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Scene.h">
+      <Filter>Include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Export.h">
+      <Filter>Include\EngineBase</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\D12Renderer.h">
+      <Filter>Include\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\d3dx12.h">
+      <Filter>Include\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\DDSTextureLoader.h">
+      <Filter>Include\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\D3DUtil.h">
+      <Filter>Include\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\MathHelper.h">
+      <Filter>Include\DX</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Include\Export_Time.inl">
+      <Filter>Include\EngineBase</Filter>
+    </None>
+    <None Include="..\Include\Export_Camera.inl">
+      <Filter>Include\EngineBase</Filter>
+    </None>
+    <None Include="..\Include\Export_Input.inl">
+      <Filter>Include\EngineBase</Filter>
+    </None>
+  </ItemGroup>
+</Project>

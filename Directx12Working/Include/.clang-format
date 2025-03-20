@@ -1,0 +1,12 @@
+---
+# Use Google code formatting rules.
+BasedOnStyle: Microsoft
+ColumnLimit: 80
+AlwaysBreakTemplateDeclarations: Yes
+AllowShortBlocksOnASingleLine: Empty
+AllowShortFunctionsOnASingleLine: Inline
+PointerAlignment: Left
+ReferenceAlignment: Left
+IndentWidth: 2
+TabWidth: 2
+...
