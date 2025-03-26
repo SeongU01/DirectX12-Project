@@ -11,6 +11,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "01.Initialize", "01.Initial
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "02.BoxApp", "02.BoxApp\Default\02.BoxApp.vcxproj", "{2374133B-30CB-462B-8C37-5B06E7FBDB68}"
+	ProjectSection(ProjectDependencies) = postProject
+		{14D9B8F0-6A73-4A46-898A-F336FE3904AE} = {14D9B8F0-6A73-4A46-898A-F336FE3904AE}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -49,8 +49,9 @@
 #include "MathHelper.h"
 #include "functional"
 
-static int WINCX = 800;
-static int WINCY = 600;
+extern int   WINCX;
+extern int   WINCY;
+extern bool  ISREADYCLIENT;
 extern float _NEAR;
 extern float _FAR;
 extern float _FOV;

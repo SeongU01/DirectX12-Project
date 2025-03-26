@@ -118,7 +118,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>../../01.Initialize/Include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../02.BoxApp/Include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
@@ -167,6 +167,11 @@ xcopy /y /d "$(ProjectDir)..\Bin\$(Configuration)\*compute.cso" "$(ProjectDir)..
     <ClInclude Include="..\Include\Client_Define.h" />
     <ClInclude Include="..\Include\MainGame.h" />
     <ClInclude Include="..\Include\TestScene.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Resource\Shader\box.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,5 +1,8 @@
 #include "WinApp.h"
-
+#include "D12Renderer.h"
+int WINCX = 800;
+int WINCY = 600;
+bool ISREADYCLIENT = false;
 DEVMODE _originalDevMode{};
 
 void WinApp::Free()
@@ -105,6 +108,13 @@ LRESULT WinApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		PostQuitMessage(0);
 		break;
+    case WM_SIZE:
+        if (ISREADYCLIENT)
+        {
+            WINCX = LOWORD(lParam);
+            WINCY = HIWORD(lParam);
+            D12Renderer::GetInstance()->OnResize();
+        }
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);
 	}

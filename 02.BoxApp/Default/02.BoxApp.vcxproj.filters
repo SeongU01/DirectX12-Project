@@ -19,6 +19,9 @@
     <Filter Include="02.Scene">
       <UniqueIdentifier>{e161cc00-15ad-40db-b8a7-77cfa89fd5ff}</UniqueIdentifier>
     </Filter>
+    <Filter Include="98.Shader">
+      <UniqueIdentifier>{77299004-fd75-4f2e-a2c3-1f9a17bcecbe}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Client_Define.h">
@@ -30,5 +33,10 @@
     <ClInclude Include="..\Include\TestScene.h">
       <Filter>02.Scene</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Resource\Shader\box.hlsl">
+      <Filter>98.Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>

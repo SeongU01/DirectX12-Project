@@ -37,6 +37,8 @@
     <ClInclude Include="..\Include\SceneManager.h" />
     <ClInclude Include="..\Include\GameTimer.h" />
     <ClInclude Include="..\Include\Transform.h" />
+    <ClInclude Include="..\Include\UploadBuffer.h" />
+    <ClInclude Include="..\Include\Vertex.h" />
     <ClInclude Include="..\Include\WinApp.h" />
   </ItemGroup>
   <ItemGroup>

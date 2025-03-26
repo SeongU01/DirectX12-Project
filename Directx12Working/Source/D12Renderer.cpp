@@ -59,6 +59,8 @@ void D12Renderer::OnResize()
   assert(_device);
   assert(_swapChain);
   assert(_commandAllocator);
+  _clientWidth = WINCX;
+  _clientHeight = WINCY;
   FlushCommandQueue();
   ThrowIfFailed(_commandList->Reset(_commandAllocator.Get(), nullptr));
 
@@ -135,6 +137,11 @@ void D12Renderer::OnResize()
   _scissorRect = {0, 0, _clientWidth, _clientHeight};
 }
 
+void D12Renderer::ResetCommandList()
+{
+  ThrowIfFailed(_commandList->Reset(_commandAllocator.Get(), nullptr));
+}
+
 void D12Renderer::FlushCommandQueue()
 {
   _fenceValue++;
@@ -152,57 +159,12 @@ void D12Renderer::FlushCommandQueue()
 
 void D12Renderer::BeginDraw()
 {
-  ThrowIfFailed(_commandAllocator->Reset());
-  // 커맨드 리스트를 재설정하면 메모리 재활용 가능
-  ThrowIfFailed(_commandList->Reset(_commandAllocator.Get(), nullptr));
-  // viewPort 설정
-  _commandList->RSSetViewports(1, &_screenViewport);
-  _commandList->RSSetScissorRects(1, &_scissorRect);
-  // 상태 전이 통보
-  auto backBuffer = CurrentBackBufferView();
-  auto dsv = DepthStencilView();
-  auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-      CurrentBackBuffer(), D3D12_RESOURCE_STATE_PRESENT,
-      D3D12_RESOURCE_STATE_RENDER_TARGET);
-  _commandList->ResourceBarrier(1, &barrier);
-  _commandList->ClearRenderTargetView(
-      backBuffer, DirectX::Colors::LightSteelBlue, 0, nullptr);
-  //아래 내용과 동일하게 Rect 구역을 지정해서 Rect만 클리어가능
-  //D3D12_RECT rtRect1;
-  //rtRect1.left = 200.f;
-  //rtRect1.right = 300.f;
-  //rtRect1.top = 200.f;
-  //rtRect1.bottom = 300.f;
-  //D3D12_RECT rtRect2;
-  //rtRect2.left = 400.f;
-  //rtRect2.right = 500.f;
-  //rtRect2.top = 400.f;
-  //rtRect2.bottom = 500.f;
-  //D3D12_RECT rtRects[2] = {rtRect1,rtRect2};
-  //_commandList->ClearRenderTargetView(
-  //    backBuffer, DirectX::Colors::LightSteelBlue, 2, rtRects);
 
-  // TODO : 어디까지 begin Draw에서 해줄건지 구조 고민 필수!!
-  _commandList->ClearDepthStencilView(
-      dsv, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1.0f, 0, 0,
-      nullptr);
-  _commandList->OMSetRenderTargets(1, &backBuffer, true, &dsv);
-  barrier = CD3DX12_RESOURCE_BARRIER::Transition(
-      CurrentBackBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET,
-      D3D12_RESOURCE_STATE_PRESENT);
-  _commandList->ResourceBarrier(1, &barrier);
-  ThrowIfFailed(_commandList->Close());
 }
 
 void D12Renderer::EndDraw()
 {
-  ID3D12CommandList* cmdList[] = {_commandList.Get()};
-  _commandQueue->ExecuteCommandLists(_countof(cmdList), cmdList);
-  _swapChain->Present(0, 0);
-  _currentBackBuffer = (_currentBackBuffer + 1) % SwapChainBufferCount;
 
-  // GPU 동기화 기다리기
-  FlushCommandQueue();
 }
 
 ID3D12Resource* D12Renderer::CurrentBackBuffer()
@@ -222,13 +184,10 @@ D3D12_CPU_DESCRIPTOR_HANDLE D12Renderer::DepthStencilView()
   return _dsvHeap->GetCPUDescriptorHandleForHeapStart();
 }
 
-D12Renderer* D12Renderer::Create()
+void D12Renderer::Free()
 {
-  D12Renderer* pInstance = new D12Renderer();
-  return pInstance;
-}
 
-void D12Renderer::Free() {}
+}
 
 void D12Renderer::CalculateFrameRate()
 {
@@ -250,6 +209,16 @@ void D12Renderer::CalculateFrameRate()
     frameCnt = 0;
     elapsed+= 1.0f;
   }
+}
+
+void D12Renderer::ChangeBackBuffer() 
+{
+    _currentBackBuffer = (_currentBackBuffer + 1) % SwapChainBufferCount;
+}
+
+float D12Renderer::AspectRatio()
+{
+    return static_cast<float>(_clientWidth) / _clientHeight;
 }
 
 void D12Renderer::CreateCommandObjects()
@@ -307,3 +276,12 @@ void D12Renderer::CreateRtvAndDsvDescriptorHeaps()
   ThrowIfFailed(_device->CreateDescriptorHeap(
       &dsvHeapDesc, IID_PPV_ARGS(_dsvHeap.GetAddressOf())));
 }
+
+ComPtr<ID3D12Resource> D12Renderer::CreateDefaultBuffer(
+    const void* initData, uint64_t byteSize,
+    ComPtr<ID3D12Resource>& updloadBuff)
+{
+  return d3dUtil::CreateDefaultBuffer(_device.Get(), _commandList.Get(),
+                                      initData, byteSize, updloadBuff);
+}
+

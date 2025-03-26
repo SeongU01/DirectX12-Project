@@ -22,10 +22,10 @@
     <Filter Include="Source\Renderer">
       <UniqueIdentifier>{efc5f84c-baa7-43a3-be92-7a9ab249a67c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source\DX">
+    <Filter Include="Source\Renderer\DX">
       <UniqueIdentifier>{53a04e51-1f96-47f4-b5e1-467b98ec0609}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Include\DX">
+    <Filter Include="Include\Renderer\DX">
       <UniqueIdentifier>{7691225c-bb53-4d4f-a5a2-2510f94fd485}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -61,10 +61,10 @@
       <Filter>Source\Renderer</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\MathHelper.cpp">
-      <Filter>Source\DX</Filter>
+      <Filter>Source\Renderer\DX</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\D3DUtil.cpp">
-      <Filter>Source\DX</Filter>
+      <Filter>Source\Renderer\DX</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -114,16 +114,22 @@
       <Filter>Include\Renderer</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\d3dx12.h">
-      <Filter>Include\DX</Filter>
+      <Filter>Include\Renderer\DX</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\DDSTextureLoader.h">
-      <Filter>Include\DX</Filter>
+      <Filter>Include\Renderer\DX</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\D3DUtil.h">
-      <Filter>Include\DX</Filter>
+      <Filter>Include\Renderer\DX</Filter>
     </ClInclude>
     <ClInclude Include="..\Include\MathHelper.h">
-      <Filter>Include\DX</Filter>
+      <Filter>Include\Renderer\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\Vertex.h">
+      <Filter>Include\Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\UploadBuffer.h">
+      <Filter>Include\Renderer\DX</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -157,7 +157,8 @@ struct SubmeshGeometry
 struct MeshGeometry
 {
   // Give it a name so we can look it up by name.
-  std::string Name;
+    ~MeshGeometry() {};
+    std::string Name;
 
   // System memory copies.  Use Blobs because the vertex/index format can be
   // generic. It is up to the client to cast appropriately.

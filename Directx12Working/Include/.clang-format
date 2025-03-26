@@ -5,8 +5,11 @@ ColumnLimit: 80
 AlwaysBreakTemplateDeclarations: Yes
 AllowShortBlocksOnASingleLine: Empty
 AllowShortFunctionsOnASingleLine: Inline
+
 PointerAlignment: Left
 ReferenceAlignment: Left
-IndentWidth: 2
-TabWidth: 2
+IndentWidth: 4
+TabWidth: 4
+AlignConsecutiveAssignments: false 
+AlignConsecutiveDeclarations: true
 ...
