@@ -64,10 +64,10 @@ bool TestScene::Initialize()
 
 void TestScene::Render()
 {
-  ThrowIfFailed(_renderer->_commandAllocator->Reset());
+  ThrowIfFailed(_renderer->_directCommandAllocator->Reset());
   // 커맨드 리스트를 재설정하면 메모리 재활용 가능
   ThrowIfFailed(_renderer->_commandList->Reset(
-      _renderer->_commandAllocator.Get(), nullptr));
+      _renderer->_directCommandAllocator.Get(), nullptr));
   // viewPort 설정
   _renderer->_commandList->RSSetViewports(1, &_renderer->_screenViewport);
   _renderer->_commandList->RSSetScissorRects(1, &_renderer->_scissorRect);

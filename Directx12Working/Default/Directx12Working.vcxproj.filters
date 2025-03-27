@@ -66,6 +66,9 @@
     <ClCompile Include="..\Source\D3DUtil.cpp">
       <Filter>Source\Renderer\DX</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\GeometryGenerator.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Include\Base.h">
@@ -130,6 +133,9 @@
     </ClInclude>
     <ClInclude Include="..\Include\UploadBuffer.h">
       <Filter>Include\Renderer\DX</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\GeometryGenerator.h">
+      <Filter>Include</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

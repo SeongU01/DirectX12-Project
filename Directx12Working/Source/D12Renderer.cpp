@@ -58,11 +58,11 @@ void D12Renderer::OnResize()
 {
   assert(_device);
   assert(_swapChain);
-  assert(_commandAllocator);
+  assert(_directCommandAllocator);
   _clientWidth = WINCX;
   _clientHeight = WINCY;
   FlushCommandQueue();
-  ThrowIfFailed(_commandList->Reset(_commandAllocator.Get(), nullptr));
+  ThrowIfFailed(_commandList->Reset(_directCommandAllocator.Get(), nullptr));
 
   for (size_t i = 0; i < SwapChainBufferCount; i++)
   {
@@ -139,7 +139,7 @@ void D12Renderer::OnResize()
 
 void D12Renderer::ResetCommandList()
 {
-  ThrowIfFailed(_commandList->Reset(_commandAllocator.Get(), nullptr));
+  ThrowIfFailed(_commandList->Reset(_directCommandAllocator.Get(), nullptr));
 }
 
 void D12Renderer::FlushCommandQueue()
@@ -229,9 +229,9 @@ void D12Renderer::CreateCommandObjects()
   ThrowIfFailed(
       _device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&_commandQueue)));
   ThrowIfFailed(_device->CreateCommandAllocator(
-      D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(_commandAllocator.GetAddressOf())));
+      D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(_directCommandAllocator.GetAddressOf())));
   ThrowIfFailed(_device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT,
-                                           _commandAllocator.Get(), nullptr,
+                                           _directCommandAllocator.Get(), nullptr,
                                            IID_PPV_ARGS(_commandList.GetAddressOf())));
   _commandList->Close();
 }

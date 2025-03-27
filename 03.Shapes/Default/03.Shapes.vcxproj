@@ -18,55 +18,11 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\Include\Base.h" />
-    <ClInclude Include="..\Include\Camera.h" />
-    <ClInclude Include="..\Include\Component.h" />
-    <ClInclude Include="..\Include\D12Renderer.h" />
-    <ClInclude Include="..\Include\D3DUtil.h" />
-    <ClInclude Include="..\Include\d3dx12.h" />
-    <ClInclude Include="..\Include\DDSTextureLoader.h" />
-    <ClInclude Include="..\Include\Define.h" />
-    <ClInclude Include="..\Include\Export.h" />
-    <ClInclude Include="..\Include\Function.h" />
-    <ClInclude Include="..\Include\GameManager.h" />
-    <ClInclude Include="..\Include\GameObject.h" />
-    <ClInclude Include="..\Include\GeometryGenerator.h" />
-    <ClInclude Include="..\Include\InputManager.h" />
-    <ClInclude Include="..\Include\MathHelper.h" />
-    <ClInclude Include="..\Include\Scene.h" />
-    <ClInclude Include="..\Include\SceneManager.h" />
-    <ClInclude Include="..\Include\GameTimer.h" />
-    <ClInclude Include="..\Include\Transform.h" />
-    <ClInclude Include="..\Include\UploadBuffer.h" />
-    <ClInclude Include="..\Include\Vertex.h" />
-    <ClInclude Include="..\Include\WinApp.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\Source\Camera.cpp" />
-    <ClCompile Include="..\Source\Component.cpp" />
-    <ClCompile Include="..\Source\D12Renderer.cpp" />
-    <ClCompile Include="..\Source\D3DUtil.cpp" />
-    <ClCompile Include="..\Source\GameManager.cpp" />
-    <ClCompile Include="..\Source\GameObject.cpp" />
-    <ClCompile Include="..\Source\GeometryGenerator.cpp" />
-    <ClCompile Include="..\Source\InputManager.cpp" />
-    <ClCompile Include="..\Source\MathHelper.cpp" />
-    <ClCompile Include="..\Source\SceneManager.cpp" />
-    <ClCompile Include="..\Source\GameTimer.cpp" />
-    <ClCompile Include="..\Source\Transform.cpp" />
-    <ClCompile Include="..\Source\WinApp.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Include\Export_Camera.inl" />
-    <None Include="..\Include\Export_Input.inl" />
-    <None Include="..\Include\Export_Time.inl" />
-  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{14d9b8f0-6a73-4a46-898a-f336fe3904ae}</ProjectGuid>
-    <RootNamespace>Directx12Working</RootNamespace>
+    <ProjectGuid>{E5819394-D058-4AA8-AF86-8F3783B7A0EF}</ProjectGuid>
+    <RootNamespace>Lighting</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -84,13 +40,13 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
@@ -115,10 +71,18 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <OutDir>$(projectDir)../Reference/lib/Debug/</OutDir>
+    <IncludePath>../../DirectX12Working/Include/;$(IncludePath)</IncludePath>
+    <ReferencePath>
+    </ReferencePath>
+    <LibraryPath>$(SolutionDir)DirectX12Working/Reference/lib/Debug/;$(LibraryPath);$(ReferencePath)</LibraryPath>
+    <OutDir>$(ProjectDir)../Bin/Debug/</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <OutDir>$(projectDir)../Reference/lib/Release/</OutDir>
+    <IncludePath>../../DirectX12Working/Include/;$(IncludePath)</IncludePath>
+    <ReferencePath>
+    </ReferencePath>
+    <LibraryPath>$(SolutionDir)DirectX12Working/Reference/lib/Release/;$(LibraryPath);$(ReferencePath)</LibraryPath>
+    <OutDir>$(ProjectDir)../Bin/Release/</OutDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -154,13 +118,20 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(ProjectDir)../Include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../03.Shapes/Include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>DirectX12Working.lib;d3dcompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(ProjectDir)..\Bin\$(Configuration)\*vertex.cso" "$(ProjectDir)..\Resource\cso\vertex\"
+xcopy /y /d "$(ProjectDir)..\Bin\$(Configuration)\*pixel.cso" "$(ProjectDir)..\Resource\cso\pixel\"
+xcopy /y /d "$(ProjectDir)..\Bin\$(Configuration)\*compute.cso" "$(ProjectDir)..\Resource\cso\compute\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -170,15 +141,40 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(ProjectDir)../Include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>../../01.Initialize/Include/;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>DirectX12Working.lib;D3DCompiler.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /y /d "$(ProjectDir)..\Bin\$(Configuration)\*vertex.cso" "$(ProjectDir)..\Resource\cso\vertex\"
+xcopy /y /d "$(ProjectDir)..\Bin\$(Configuration)\*pixel.cso" "$(ProjectDir)..\Resource\cso\pixel\"
+xcopy /y /d "$(ProjectDir)..\Bin\$(Configuration)\*compute.cso" "$(ProjectDir)..\Resource\cso\compute\"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\Source\FrameResrouce.cpp" />
+    <ClCompile Include="..\Source\MainGame.cpp" />
+    <ClCompile Include="..\Source\TestScene.cpp" />
+    <ClCompile Include="main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Include\Client_Define.h" />
+    <ClInclude Include="..\Include\FrameResrouce.h" />
+    <ClInclude Include="..\Include\MainGame.h" />
+    <ClInclude Include="..\Include\TestScene.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Resource\Shader\shader.hlsl">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+    </FxCompile>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

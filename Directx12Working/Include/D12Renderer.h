@@ -22,7 +22,7 @@ class D12Renderer : public Base, public SingleTon<D12Renderer>
     D3D12_CPU_DESCRIPTOR_HANDLE DepthStencilView();
     ID3D12Device*               GetDevice() { return _device.Get(); }
     ID3D12GraphicsCommandList*  GetCmdList() { return _commandList.Get(); }
-    ID3D12CommandAllocator* GetCmdalloc() { return _commandAllocator.Get(); }
+    ID3D12CommandAllocator* GetCmdalloc() { return _directCommandAllocator.Get(); }
     ID3D12CommandQueue*     GetCommandQueue() { return _commandQueue.Get(); }
 
   public:
@@ -55,7 +55,7 @@ class D12Renderer : public Base, public SingleTon<D12Renderer>
     // Command
     ComPtr<ID3D12CommandQueue> _commandQueue;
     //=> 여러개의 commandAllocator ,commandList를 만들어서 병렬처리를 할 수 있음
-    ComPtr<ID3D12CommandAllocator>    _commandAllocator;
+    ComPtr<ID3D12CommandAllocator>    _directCommandAllocator;
     ComPtr<ID3D12GraphicsCommandList> _commandList;
     // Descriptor Heap
     ComPtr<ID3D12DescriptorHeap> _rtvHeap;
