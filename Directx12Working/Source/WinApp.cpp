@@ -3,6 +3,7 @@
 int WINCX = 800;
 int WINCY = 600;
 bool ISREADYCLIENT = false;
+bool RESIZEFLAG    = true;
 DEVMODE _originalDevMode{};
 
 void WinApp::Free()
@@ -113,7 +114,8 @@ LRESULT WinApp::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
         {
             WINCX = LOWORD(lParam);
             WINCY = HIWORD(lParam);
-            D12Renderer::GetInstance()->OnResize();
+            RESIZEFLAG = true;
+			D12Renderer::GetInstance()->OnResize();
         }
 	default:
 		return DefWindowProc(hWnd, message, wParam, lParam);

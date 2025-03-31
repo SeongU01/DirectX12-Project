@@ -52,6 +52,7 @@
 extern int   WINCX;
 extern int   WINCY;
 extern bool  ISREADYCLIENT;
+extern bool  RESIZEFLAG;
 extern float _NEAR;
 extern float _FAR;
 extern float _FOV;

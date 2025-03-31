@@ -73,9 +73,11 @@ Microsoft::WRL::ComPtr<ID3D12Resource> d3dUtil::CreateDefaultBuffer(
   CD3DX12_RESOURCE_BARRIER barrier = CD3DX12_RESOURCE_BARRIER::Transition(
       defaultBuffer.Get(), D3D12_RESOURCE_STATE_COMMON,
       D3D12_RESOURCE_STATE_COPY_DEST);
+
   cmdList->ResourceBarrier(1, &barrier);
   UpdateSubresources<1>(cmdList, defaultBuffer.Get(), uploadBuffer.Get(), 0, 0,
                         1, &subResourceData);
+  barrier = CD3DX12_RESOURCE_BARRIER::Transition(defaultBuffer.Get(),D3D12_RESOURCE_STATE_COPY_DEST,D3D12_RESOURCE_STATE_GENERIC_READ);
   cmdList->ResourceBarrier(1, &barrier);
 
   // Note: uploadBuffer has to be kept alive after the above function calls
@@ -110,6 +112,32 @@ ComPtr<ID3DBlob> d3dUtil::CompileShader(const std::wstring& filename,
   ThrowIfFailed(hr);
 
   return byteCode;
+}
+ID3DBlob* d3dUtil::CompileRawShader(const std::wstring& filename,
+                                        const D3D_SHADER_MACRO* defines,
+                                        const std::string& entrypoint,
+                                        const std::string& target)
+{
+    UINT compileFlags = 0;
+#if defined(DEBUG) || defined(_DEBUG)
+    compileFlags = D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION;
+#endif
+
+    HRESULT hr = S_OK;
+
+    ComPtr<ID3DBlob> byteCode = nullptr;
+    ComPtr<ID3DBlob> errors;
+    hr = D3DCompileFromFile(filename.c_str(), defines,
+                            D3D_COMPILE_STANDARD_FILE_INCLUDE,
+                            entrypoint.c_str(), target.c_str(), compileFlags, 0,
+                            &byteCode, &errors);
+
+    if (errors != nullptr)
+        OutputDebugStringA((char*)errors->GetBufferPointer());
+
+    ThrowIfFailed(hr);
+
+    return byteCode.Get();
 }
 
 std::wstring DxException::ToString() const

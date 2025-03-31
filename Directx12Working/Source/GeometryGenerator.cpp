@@ -428,7 +428,7 @@ GeometryGenerator::MeshData GeometryGenerator::CreateQuad(float x, float y,
     meshData.vertices.resize(4);
     meshData.indices32.resize(6);
 
-    // Position coordinates specified in NDC space.
+    // position coordinates specified in NDC space.
     meshData.vertices[0] = Vertex(x, y - h, depth, 0.0f, 0.0f, -1.0f, 1.0f,
                                   0.0f, 0.0f, 0.0f, 1.0f);
 
