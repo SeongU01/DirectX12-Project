@@ -83,6 +83,7 @@ class LitColumnsScene : public Scene
     void CreateRenderItmes();
     void CreateFrameResources();
     void CreatePSOs();
+    void CreateSrvDescriptorHeap();
 
     void DrawRenderItem(ID3D12GraphicsCommandList*      cmdList,
                         const std::vector<RenderItem*>& renderItems);

@@ -37,15 +37,43 @@ void LitColumnsScene::Free()
             delete iter;
         }
     }
+
+    ImGui_ImplDX12_Shutdown();
+    ImGui_ImplWin32_Shutdown();
+    ImGui::DestroyContext();
 }
 
 bool LitColumnsScene::InitImGui(HWND hWnd)
 {
-
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;
+    ImGui_ImplWin32_Init(hWnd);
+    ImGui_ImplDX12_Init(
+        _renderer->GetDevice(), _renderer->SwapChainBufferCount,
+        _renderer->_backBufferFormat, _srvDescriptorHeap.Get(),
+        _srvDescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
+        _srvDescriptorHeap->GetGPUDescriptorHandleForHeapStart());
     return true;
 }
 
-void LitColumnsScene::ImGuiRender() {}
+void LitColumnsScene::ImGuiRender()
+{
+    ImGui_ImplDX12_NewFrame();
+    ImGui_ImplWin32_NewFrame();
+    ImGui::NewFrame();
+    ImGui::Begin("directx12 imgui demo");
+    ImGui::Text("test");
+    ImGui::End();
+    ImGui::Render();
+
+    ID3D12DescriptorHeap* descriptorHeaps[] = {_srvDescriptorHeap.Get()};
+    _cmdList->SetDescriptorHeaps(1, descriptorHeaps);
+
+    ImGui_ImplDX12_RenderDrawData(ImGui::GetDrawData(), _cmdList);
+}
 
 void LitColumnsScene::UpdateCamera(float dt)
 {
@@ -102,7 +130,8 @@ int LitColumnsScene::Update(const float& dt)
     _currFrameIndex = (_currFrameIndex + 1) % gNumFrameResources;
     _currFrame      = _frameResource[_currFrameIndex];
 
-    if (_currFrame->Fence != 0 && _renderer->_fence->GetCompletedValue() < _currFrame->Fence)
+    if (_currFrame->Fence != 0 &&
+        _renderer->_fence->GetCompletedValue() < _currFrame->Fence)
     {
         HANDLE eventHandle =
             CreateEventEx(nullptr, nullptr, false, EVENT_ALL_ACCESS);
@@ -141,6 +170,8 @@ bool LitColumnsScene::Initialize()
     CreateRenderItmes();
     CreateFrameResources();
     CreatePSOs();
+    CreateSrvDescriptorHeap();
+    InitImGui(GameManager::GetInstance()->GetWindow());
     ThrowIfFailed(_cmdList->Close());
     ID3D12CommandList* cmdlists[] = {_cmdList};
     _renderer->_commandQueue->ExecuteCommandLists(_countof(cmdlists), cmdlists);
@@ -166,9 +197,9 @@ void LitColumnsScene::Render()
     _cmdList->RSSetViewports(1, &_renderer->_screenViewport);
     _cmdList->RSSetScissorRects(1, &_renderer->_scissorRect);
 
-    auto dsv        = _renderer->DepthStencilView();
+    auto dsv            = _renderer->DepthStencilView();
     auto backbufferview = _renderer->CurrentBackBufferView();
-    auto backbuffer = _renderer->CurrentBackBuffer();
+    auto backbuffer     = _renderer->CurrentBackBuffer();
 
     auto barrier = CD3DX12_RESOURCE_BARRIER::Transition(
         backbuffer, D3D12_RESOURCE_STATE_PRESENT,
@@ -185,10 +216,14 @@ void LitColumnsScene::Render()
     _cmdList->SetGraphicsRootConstantBufferView(2,
                                                 passCB->GetGPUVirtualAddress());
     DrawRenderItem(_cmdList, _opaqueItems);
+    ImGuiRender();
+
+
     barrier = CD3DX12_RESOURCE_BARRIER::Transition(
         backbuffer, D3D12_RESOURCE_STATE_RENDER_TARGET,
         D3D12_RESOURCE_STATE_PRESENT);
     _cmdList->ResourceBarrier(1, &barrier);
+
     ThrowIfFailed(_cmdList->Close());
     ID3D12CommandList* cmdLists[] = {_cmdList};
     _renderer->GetCommandQueue()->ExecuteCommandLists(_countof(cmdLists),
@@ -198,13 +233,11 @@ void LitColumnsScene::Render()
     _currFrame->Fence = ++_renderer->_fenceValue;
     _renderer->GetCommandQueue()->Signal(_renderer->_fence.Get(),
                                          _renderer->_fenceValue);
-
 }
 
 LitColumnsScene* LitColumnsScene::Create(HWND hWnd)
 {
     LitColumnsScene* pInstance = new LitColumnsScene;
-    pInstance->InitImGui(hWnd);
     return pInstance;
 }
 
@@ -397,9 +430,10 @@ void LitColumnsScene::CreateSkullGeometry()
     fin.close();
 
     const UINT vByteSize = static_cast<UINT>(vertices.size()) * sizeof(Vertex);
-    const UINT iByteSize = static_cast<UINT>(indices.size()) * sizeof(std::int32_t);
-    auto geo             = new MeshGeometry();
-    geo->Name            = "skullGeo";
+    const UINT iByteSize =
+        static_cast<UINT>(indices.size()) * sizeof(std::int32_t);
+    auto geo  = new MeshGeometry();
+    geo->Name = "skullGeo";
     ThrowIfFailed(
         D3DCreateBlob(vByteSize, geo->VertexBufferCPU.GetAddressOf()));
     CopyMemory(geo->VertexBufferCPU->GetBufferPointer(), vertices.data(),
@@ -517,7 +551,7 @@ void LitColumnsScene::CreateRenderItmes()
         skullRenderItem->geo->DrawArgs["skull"].BaseVertexLocation;
     _allRenderItem.push_back(std::move(skullRenderItem));
     XMMATRIX brickTexTransform = XMMatrixScaling(1.f, 1.f, 1.f);
-    UINT objCBIndex            = 3;  
+    UINT objCBIndex            = 3;
     for (size_t i = 0; i < 5; ++i)
     {
         auto leftCylRitem     = new RenderItem();
@@ -644,6 +678,17 @@ void LitColumnsScene::CreatePSOs()
         IID_PPV_ARGS(_psos["opaque_wireframe"].GetAddressOf())));
 }
 
+void LitColumnsScene::CreateSrvDescriptorHeap()
+{
+    D3D12_DESCRIPTOR_HEAP_DESC srvHeapDesc = {};
+    // imgui font desciptor
+    srvHeapDesc.NumDescriptors = 1;
+    srvHeapDesc.Type           = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
+    srvHeapDesc.Flags          = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
+    ThrowIfFailed(_renderer->GetDevice()->CreateDescriptorHeap(
+        &srvHeapDesc, IID_PPV_ARGS(_srvDescriptorHeap.GetAddressOf())));
+}
+
 void LitColumnsScene::DrawRenderItem(
     ID3D12GraphicsCommandList* cmdList,
     const std::vector<RenderItem*>& renderItems)
@@ -657,7 +702,8 @@ void LitColumnsScene::DrawRenderItem(
     for (size_t i = 0; i < renderItems.size(); ++i)
     {
         auto item = renderItems[i];
-        D3D12_VERTEX_BUFFER_VIEW vertexBufferView = item->geo->VertexBufferView();
+        D3D12_VERTEX_BUFFER_VIEW vertexBufferView =
+            item->geo->VertexBufferView();
         cmdList->IASetVertexBuffers(0, 1, &vertexBufferView);
         D3D12_INDEX_BUFFER_VIEW indexBufferView = item->geo->IndexBufferView();
         cmdList->IASetIndexBuffer(&indexBufferView);
@@ -667,8 +713,8 @@ void LitColumnsScene::DrawRenderItem(
             objectCB->GetGPUVirtualAddress() + item->objCbIndex * objCBByte;
         D3D12_GPU_VIRTUAL_ADDRESS matCBAddress =
             matCB->GetGPUVirtualAddress() + item->mat->MatCBIndex * matCBByte;
-        cmdList->SetGraphicsRootConstantBufferView(0,objCBAddress);
-        cmdList->SetGraphicsRootConstantBufferView(1,matCBAddress);
+        cmdList->SetGraphicsRootConstantBufferView(0, objCBAddress);
+        cmdList->SetGraphicsRootConstantBufferView(1, matCBAddress);
 
         cmdList->DrawIndexedInstanced(item->indexCount, 1,
                                       item->startIndexLocation,
@@ -683,7 +729,7 @@ void LitColumnsScene::UpdateObjectCB(const float& dt)
     {
         if (iter->numFrameDirtyFlag > 0)
         {
-            XMMATRIX world = XMLoadFloat4x4(&iter->world);
+            XMMATRIX world        = XMLoadFloat4x4(&iter->world);
             XMMATRIX texTransform = XMLoadFloat4x4(&iter->texTransform);
             ObjectConstants cb;
             XMStoreFloat4x4(&cb.world, XMMatrixTranspose(world));
@@ -696,11 +742,11 @@ void LitColumnsScene::UpdateObjectCB(const float& dt)
 
 void LitColumnsScene::UpdateMainPassCB(const float& dt)
 {
-    XMMATRIX view = XMLoadFloat4x4(&_view);
-    XMMATRIX proj = XMLoadFloat4x4(&_proj);
-    XMMATRIX viewProj = XMMatrixMultiply(view, proj);
-    XMMATRIX invView  = XMMatrixInverse(nullptr, view);
-    XMMATRIX invProj = XMMatrixInverse(nullptr, proj);
+    XMMATRIX view        = XMLoadFloat4x4(&_view);
+    XMMATRIX proj        = XMLoadFloat4x4(&_proj);
+    XMMATRIX viewProj    = XMMatrixMultiply(view, proj);
+    XMMATRIX invView     = XMMatrixInverse(nullptr, view);
+    XMMATRIX invProj     = XMMatrixInverse(nullptr, proj);
     XMMATRIX invViewProj = XMMatrixInverse(nullptr, viewProj);
     XMStoreFloat4x4(&_mainPassCB.view, XMMatrixTranspose(view));
     XMStoreFloat4x4(&_mainPassCB.invView, XMMatrixTranspose(invView));
@@ -729,8 +775,7 @@ void LitColumnsScene::UpdateMainPassCB(const float& dt)
     currPassCB->CopyData(0, _mainPassCB);
 }
 
-
-void LitColumnsScene::UpdateMaterialCB(const float& dt) 
+void LitColumnsScene::UpdateMaterialCB(const float& dt)
 {
     auto currMatCB = _currFrame->materialCB;
     for (auto& iter : _materials)
