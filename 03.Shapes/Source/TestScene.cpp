@@ -214,7 +214,7 @@ void TestScene::CreateShapeGeometry()
     GeometryGenerator::MeshData grid   = geoGen.CreateGrid(20.f, 30.f, 60, 40);
     GeometryGenerator::MeshData sphere = geoGen.CreateSphere(0.5f, 20, 20);
     GeometryGenerator::MeshData cylinder =
-        geoGen.CreateCylinder(0.5f, 0.3f, 3.f, 20, 20);
+        geoGen.CreateCylinder(0.5f, 0.f, 3.f, 20, 20);
     // 모든 기하 구조를 하나의 버텍스/인덱스 버퍼에 담아 인스턴싱한다.
     UINT boxVertexOffset  = 0;
     UINT gridVertexOffset = static_cast<UINT>(box.vertices.size());
@@ -492,6 +492,7 @@ void TestScene::CreateFrameResource()
 
 void TestScene::CreateRootSignature()
 {
+    // 이번 파이프라인에 어떤 버퍼 뷰가 사용되는지 고지하는 정도?
     CD3DX12_DESCRIPTOR_RANGE cbTable0;
     cbTable0.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0, 0);
     CD3DX12_DESCRIPTOR_RANGE cbTable1;

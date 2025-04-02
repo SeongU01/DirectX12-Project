@@ -531,28 +531,29 @@ void GeometryGenerator::BuildCylinderTopCap(float bottomRadius, float topRadius,
                                             MeshData& meshData)
 {
     uint32 baseindex = static_cast<uint32>(meshData.vertices.size());
-    float y          = -0.5f * height;
+    float y          = 0.5f * height;
     float dTheta     = 2.f * XM_PI / sliceCount;
     for (uint32 i = 0; i <= sliceCount; ++i)
     {
-        float x = bottomRadius * cosf(i * dTheta);
-        float z = bottomRadius * sinf(i * dTheta);
+        float x = topRadius * cosf(i * dTheta);
+        float z = topRadius * sinf(i * dTheta);
+
         float u = x / height + 0.5f;
         float v = z / height + 0.5f;
 
         meshData.vertices.push_back(
-            Vertex(x, y, z, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, u, v));
+            Vertex(x, y, z, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, u, v));
     }
-    meshData.vertices.push_back(
-        Vertex(0.0f, y, 0.0f, 0.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.5f, 0.5f));
 
+    meshData.vertices.push_back(
+        Vertex(0.0f, y, 0.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.5f, 0.5f));
     uint32 centerIndex = (uint32)meshData.vertices.size() - 1;
 
     for (uint32 i = 0; i < sliceCount; ++i)
     {
         meshData.indices32.push_back(centerIndex);
-        meshData.indices32.push_back(baseindex + i);
         meshData.indices32.push_back(baseindex + i + 1);
+        meshData.indices32.push_back(baseindex + i);
     }
 }
 

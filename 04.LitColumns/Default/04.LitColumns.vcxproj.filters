@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="..\Source\MainGame.cpp">
+      <Filter>01.MainGame</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\LitColumnsScene.cpp">
+      <Filter>02.Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\FrameResrouce.cpp">
+      <Filter>98.Resource</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="01.MainGame">
+      <UniqueIdentifier>{16f63cbb-68be-4cd5-932b-755859396930}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="99.Headers">
+      <UniqueIdentifier>{d54f8294-4e29-4ce4-b373-d90d2ace7d4a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="02.Scene">
+      <UniqueIdentifier>{e161cc00-15ad-40db-b8a7-77cfa89fd5ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Shader">
+      <UniqueIdentifier>{77299004-fd75-4f2e-a2c3-1f9a17bcecbe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="98.Resource">
+      <UniqueIdentifier>{0e0c45dc-b3ae-47fe-8621-92d1a9df526b}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Include\Client_Define.h">
+      <Filter>99.Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\MainGame.h">
+      <Filter>01.MainGame</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\LitColumnsScene.h">
+      <Filter>02.Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Include\FrameResrouce.h">
+      <Filter>98.Resource</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="..\Resource\Shader\shader.hlsl">
+      <Filter>98.Shader</Filter>
+    </FxCompile>
+    <FxCompile Include="..\Resource\Shader\utility.hlsl">
+      <Filter>98.Shader</Filter>
+    </FxCompile>
+  </ItemGroup>
+</Project>

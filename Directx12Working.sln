@@ -20,6 +20,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "03.Shapes", "03.Shapes\Defa
 		{14D9B8F0-6A73-4A46-898A-F336FE3904AE} = {14D9B8F0-6A73-4A46-898A-F336FE3904AE}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "04.LitColumns", "04.LitColumns\Default\04.LitColumns.vcxproj", "{1B21A29C-7E3E-4E60-AF99-A3BF25E4690F}"
+	ProjectSection(ProjectDependencies) = postProject
+		{14D9B8F0-6A73-4A46-898A-F336FE3904AE} = {14D9B8F0-6A73-4A46-898A-F336FE3904AE}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -60,6 +65,14 @@ Global
 		{E5819394-D058-4AA8-AF86-8F3783B7A0EF}.Release|x64.Build.0 = Release|x64
 		{E5819394-D058-4AA8-AF86-8F3783B7A0EF}.Release|x86.ActiveCfg = Release|Win32
 		{E5819394-D058-4AA8-AF86-8F3783B7A0EF}.Release|x86.Build.0 = Release|Win32
+		{1B21A29C-7E3E-4E60-AF99-A3BF25E4690F}.Debug|x64.ActiveCfg = Debug|x64
+		{1B21A29C-7E3E-4E60-AF99-A3BF25E4690F}.Debug|x64.Build.0 = Debug|x64
+		{1B21A29C-7E3E-4E60-AF99-A3BF25E4690F}.Debug|x86.ActiveCfg = Debug|Win32
+		{1B21A29C-7E3E-4E60-AF99-A3BF25E4690F}.Debug|x86.Build.0 = Debug|Win32
+		{1B21A29C-7E3E-4E60-AF99-A3BF25E4690F}.Release|x64.ActiveCfg = Release|x64
+		{1B21A29C-7E3E-4E60-AF99-A3BF25E4690F}.Release|x64.Build.0 = Release|x64
+		{1B21A29C-7E3E-4E60-AF99-A3BF25E4690F}.Release|x86.ActiveCfg = Release|Win32
+		{1B21A29C-7E3E-4E60-AF99-A3BF25E4690F}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
